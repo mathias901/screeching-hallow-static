@@ -744,7 +744,7 @@ const BRIDGE={};
  // boulders at the abutments, added once the rock helper exists
  BRIDGE.rocks=[[-X+.35,Wd/2+.55,1.1],[X-.35,-Wd/2-.55,1.2],[-X+.6,-Wd/2-.5,.8],[X-.6,Wd/2+.5,.9],[-1.4,Wd/2+.45,.55],[1.5,-Wd/2-.45,.6]].map(([x,z,s])=>{const v=new V3(x,0,z).applyAxisAngle(new V3(0,1,0),ang).add(g.position);return[v.x,v.z,s];});}
 // the hero and the werewolf climb the hump when they cross
-{const _df=drawFrame;drawFrame=function(t){if(BRIDGE.top){const c=Math.cos(BRIDGE.ang),s=Math.sin(BRIDGE.ang);[heroM,foeM].forEach(m=>{const dx=m.position.x-BRIDGE.x,dz=m.position.z-BRIDGE.z,lx=dx*c-dz*s,lz=dx*s+dz*c;
+{const _df=drawFrame;drawFrame=function(t){if(BRIDGE.top){const c=Math.cos(BRIDGE.ang),s=Math.sin(BRIDGE.ang);[heroM,foeM,...(function(){try{return party.map(p=>p.m).filter(Boolean)}catch(e){return []}})()].forEach(m=>{const dx=m.position.x-BRIDGE.x,dz=m.position.z-BRIDGE.z,lx=dx*c-dz*s,lz=dx*s+dz*c;
   const on=Math.abs(lz)<BRIDGE.Wd/2&&Math.abs(lx)<BRIDGE.X;if(on){m.position.y=BRIDGE.top(lx);m.userData.onBridge=true;}else if(m.userData.onBridge){m.position.y=0;m.userData.onBridge=false;}});}_df(t);};}
 
 /* ---------- modelled trees: "Low Poly Forest Tree Pack" by 99.Miles (Sketchfab, CC BY 4.0) ----------
