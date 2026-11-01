@@ -959,7 +959,7 @@ const bld={walls:new THREE.Group(),roof:new THREE.Group(),lights:[]};let HUT_DOO
    F.chair[0].visible=false;placeFurn(make,G,'chair1',F.chair[1],F.chair[2],1.05,.6,[-Math.PI/2+.15,0]);/* tipped over on its back */
    placeFurn(make,G,'book1',F.chair[1]+.45,F.chair[2]-.35,.05,1.2);},{metal:0});
  const blood=mesh(new THREE.PlaneGeometry(.6,2.2),new THREE.MeshStandardMaterial({color:0x2a0806,roughness:.4,transparent:true,opacity:.75}),false,true);blood.rotation.x=-Math.PI/2;blood.rotation.z=.3;blood.position.set(dx0-.3,.02,.6);g.add(blood);
- const hl=new THREE.PointLight(0xff7a30,1.5,6,2);hl.position.set(g.position.x+hx-.8,.8,g.position.z+hz);scene.add(hl);bld.lights.push(hl);flickers.push({l:hl,b:1.5,s:5});
+ const hl=new THREE.PointLight(0xff7a30,1.5,6,2);hl.position.set(g.position.x+hx-.8,.8,g.position.z+hz);scene.add(hl);bld.lights.push(hl);
  const cl=new THREE.PointLight(0xffb070,.6,6,2);cl.position.set(g.position.x,2,g.position.z);scene.add(cl);bld.lights.push(cl);bld.lights.forEach(l=>{l.userData.b=l.intensity;l.userData.on=0;l.intensity=0;});
  lamp(0xffa050,1.5,7,g.position.x+L(C.x+4,C.z+4)[0],1.4,g.position.z+d/2+.6);lamp(0xff9a40,.9,5,g.position.x+dx0,1,g.position.z+d/2+.5);
  window.__chim=new THREE.Vector3(g.position.x+w/2+.1,h+2.3,g.position.z+hz);}
@@ -1906,7 +1906,7 @@ function tick(){
   dmTick();
   POIS.forEach(p=>{const u=p.g&&p.g.userData;if(u&&u.lid)u.lid.rotation.x+=((p.st.opened?-1.9:0)-u.lid.rotation.x)*Math.min(1,dt*6);if(u&&u.swing&&!reduce)u.swing.rotation.z=Math.sin(t*1.1)*.05;});
   npcM.userData.body.scale.y=1+Math.sin(t*1.8)*.012;npcMark.position.y=1.75+Math.sin(t*2.5)*.06;
-  {const inb=!!S.inside;bld.roof.visible=!inb;bld.walls.scale.y+=((inb?.35:1)-bld.walls.scale.y)*Math.min(1,dt*6);bld.lights.forEach(l=>l.visible=inb);}
+  {const inb=!!S.inside;bld.roof.visible=!inb;bld.walls.scale.y+=((inb?.35:1)-bld.walls.scale.y)*Math.min(1,dt*6);bld.lights.forEach(l=>{l.userData.on+=(+inb-l.userData.on)*Math.min(1,dt*6);l.intensity=l.userData.b*l.userData.on;});}
   const lm=leaderM(),desired=tmp.set(lm.position.x,.6,lm.position.z),delta=desired.clone().sub(prevT).multiplyScalar(1-Math.exp(-dt*4.5));controls.target.add(delta);camera.position.add(delta);prevT.copy(controls.target);
   controls.update();
   if(!reduce){flickers.forEach(f=>f.l.intensity=f.b*(.86+.1*Math.sin(t*9+f.s)+.06*Math.sin(t*23+f.s*3)));
